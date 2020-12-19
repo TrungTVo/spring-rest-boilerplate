@@ -1,3 +1,14 @@
+stages:
+  - run
+  - build
+  - test
+  - deploy
+
+run-job:
+  stage: run
+  script:
+    - ./mvnw spring-boot:run
+
 build-job:
   stage: build
   script:
