@@ -21,7 +21,6 @@ test-job1:
   stage: test
   script:
     - echo "This job tests something"
-    - java -jar target/boilerplate-0.0.1-SNAPSHOT.jar
 
 test-job2:
   stage: test
