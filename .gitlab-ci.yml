@@ -1,23 +1,22 @@
 stages:
-  - run
   - build
   - test
   - deploy
-
-run-job:
-  stage: run
-  script:
-    - ./mvnw spring-boot:run
 
 build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
+    - ./mvnw package
+  artifacts:
+    paths:
+      - target/boilerplate-0.0.1-SNAPSHOT.jar
 
 test-job1:
   stage: test
   script:
     - echo "This job tests something"
+    - java -jar target/boilerplate-0.0.1-SNAPSHOT.jar
 
 test-job2:
   stage: test
