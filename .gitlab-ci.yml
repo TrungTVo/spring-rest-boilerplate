@@ -5,6 +5,9 @@ stages:
   - test
   - deploy
 
+before_script:
+  - chmod +x mvnw
+
 build-job:
   stage: build
   script:
