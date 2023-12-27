@@ -16,49 +16,47 @@ import com.example.boilerplate.commons.models.Response;
 import com.example.boilerplate.commons.models.ResponseMetadata;
 import com.example.boilerplate.services.BoilerplateService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("boilerplate")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BoilderplateController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(BoilderplateController.class);
-	
+
 	@Autowired
 	private BoilerplateService service;
-	
+
 	@GetMapping("test")
 	public ResponseEntity<Response<?>> test() {
 		logger.info("Test message logging...");
 		Response<?> messageRes = Response.builder()
 				.data(this.service.getMessage())
-				.metadata(ResponseMetadata.success("Successfully called test API"))
+				.metadata(ResponseMetadata.success("Successfully called test API", HttpStatus.OK.value()))
 				.build();
 		return ResponseEntity.status(HttpStatus.OK).body(messageRes);
 	}
-	
-	
-	@ApiOperation(value = "Greet with message", notes = "Greet with given message string")
+
+	@Operation(summary = "Greet with message", description = "Greet with given message string")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Greeting..."),
-			@ApiResponse(code = 400, message = "Bad Request"),
-			@ApiResponse(code = 404, message = "Not Found"),
-			@ApiResponse(code = 500, message = "Internal Server Error")
+			@ApiResponse(responseCode = "200", description = "Greeting OK..."),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "404", description = "Not Found"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
 	})
 	@GetMapping(path = "greet/{message}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<?>> greet(@ApiParam(value = "Message to be sent for greeting", required = true)
-			@PathVariable(value = "message") String message) {
+	public ResponseEntity<Response<?>> greet(
+			@Parameter(name = "message", description = "Message to be sent for greeting", required = true, example = "hello world") @PathVariable(value = "message") String message) {
 		logger.info("Greet message logging...");
 		Response<?> messageRes = Response.builder()
 				.data(message)
-				.metadata(ResponseMetadata.success("Successfully called greet API"))
+				.metadata(ResponseMetadata.success("Successfully called greet API", HttpStatus.OK.value()))
 				.build();
 		return ResponseEntity.status(HttpStatus.OK).body(messageRes);
 	}
-	
+
 }

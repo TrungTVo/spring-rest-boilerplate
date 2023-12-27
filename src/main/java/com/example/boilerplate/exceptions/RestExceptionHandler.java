@@ -12,25 +12,25 @@ import com.example.boilerplate.commons.types.ResponseStatus;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-	
+
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Response> handleAllExceptions(Exception ex) {
 		ResponseMetadata metadata = ResponseMetadata.builder()
 				.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-				.status(ResponseStatus.ERROR)
+				.status(ResponseStatus.ERROR.getStatus())
 				.message(ex.getMessage())
 				.build();
 		Response response = Response.builder().metadata(metadata).build();
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(NoRecordFoundException.class)
 	public ResponseEntity<Response> handleNoRecordFoundException(NoRecordFoundException ex) {
 		ResponseMetadata metadata = ResponseMetadata.builder()
 				.statusCode(HttpStatus.NOT_FOUND.value())
-				.status(ResponseStatus.ERROR)
+				.status(ResponseStatus.ERROR.getStatus())
 				.message(ex.getMessage())
 				.build();
 		Response response = Response.builder().metadata(metadata).build();

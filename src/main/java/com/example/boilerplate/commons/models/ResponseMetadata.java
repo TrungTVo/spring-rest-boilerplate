@@ -2,8 +2,6 @@ package com.example.boilerplate.commons.models;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-
 import com.example.boilerplate.commons.types.ResponseStatus;
 
 import lombok.AllArgsConstructor;
@@ -19,14 +17,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResponseMetadata {
 	private Integer statusCode;
-	private ResponseStatus status;
+	private String status;
 	private String message;
 	private List<String> errors;
 
-	public static ResponseMetadata success(String message) {
+	public static ResponseMetadata success(String message, Integer statusCode) {
 		return ResponseMetadata.builder()
-				.statusCode(HttpStatus.OK.value())
-				.status(ResponseStatus.SUCCESS)
+				.statusCode(statusCode)
+				.status(ResponseStatus.SUCCESS.getStatus())
 				.message(message)
 				.build();
 	}
