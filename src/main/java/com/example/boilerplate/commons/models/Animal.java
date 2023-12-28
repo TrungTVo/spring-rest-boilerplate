@@ -19,8 +19,11 @@ public class Animal {
 
     private int age;
 
-    public Animal(String name, int age) {
+    private String password;
+
+    public Animal(String name, int age, String password) {
         this.name = name;
         this.age = age;
+        this.password = password;
     }
 }

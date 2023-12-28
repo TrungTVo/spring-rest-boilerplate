@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.example.boilerplate.commons.models.Animal;
+import com.example.boilerplate.commons.dtos.AnimalDTO;
 
 public interface AnimalInterface {
     void saveAnimals();
 
-    List<Animal> getAllAnimals();
+    List<AnimalDTO> getAllAnimals();
 
-    Page<Animal> getFilteredAnimals(Pageable pageable);
+    Page<AnimalDTO> getFilteredAnimals(Pageable pageable);
 }
