@@ -12,6 +12,12 @@ Boilerplate code for Spring Boot RESTFUL project, including:
 - HTTP Controllers
 - H2 in-memory database
 
+Start Server
+
+```
+./mvnw spring-boot:run
+```
+
 Access Swagger UI
 
 ```
