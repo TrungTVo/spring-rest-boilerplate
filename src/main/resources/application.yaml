@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spring-rest-boilerplate
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: trung
+    password: password
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -11,6 +11,8 @@ Boilerplate code for Spring Boot RESTFUL project, including:
 - Logging tool
 - HTTP Controllers
 - H2 in-memory database
+- Spring Actuator (health, info, metrics, etc.)
+- Dev Tools (for live reload)
 
 Start Server
 
@@ -34,4 +36,10 @@ H2 console
 
 ```
 localhost:8080/h2-console
+```
+
+Actuator
+
+```
+localhost:8080/actuator
 ```
