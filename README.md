@@ -14,6 +14,14 @@ Boilerplate code for Spring Boot RESTFUL project, including:
 - Spring Actuator (health, info, metrics, etc.)
 - Dev Tools (for live reload)
 
+## Quick Run
+
+```
+docker compose up
+```
+
+## Manual Setup
+
 Start Server
 
 ```
