@@ -39,7 +39,7 @@ public class AnimalService implements AnimalInterface {
         List<AnimalDTO> lAnimalDTO = lAnimal.stream()
                 .map(this.animalDTOMapper)
                 .collect(Collectors.toList());
-        return new PageImpl<AnimalDTO>(lAnimalDTO, pageable, lAnimalDTO.size());
+        return new PageImpl<AnimalDTO>(lAnimalDTO, pageable, pAnimal.getTotalElements());
     }
 
     @Override
