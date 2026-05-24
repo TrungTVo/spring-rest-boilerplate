@@ -6,7 +6,7 @@ Boilerplate code for Spring Boot RESTFUL project, including:
 
 - POJO Models and DTOs
 - Custom exception handlers
-- CRUD operations (with pagination & sorting)
+- CRUD operations (with offset pagination & sorting)
 - Swagger OpenAPI
 - Logging tool
 - HTTP Controllers

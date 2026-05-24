@@ -49,6 +49,7 @@ public class AnimalController {
 
     /**
      * Filter animals with page, size or sort.
+     * this is OFFSET pagination pattern
      * Sample endpoint:
      * {@code /animal/filter?page=1&size=3&sort=name,desc }
      * 
