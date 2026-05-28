@@ -1,0 +1,159 @@
+{
+  "info": {
+    "_postman_id": "50538d35-a3b8-4c34-8145-96ecaefb4746",
+    "name": "spring-rest-boilerplate",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6355772"
+  },
+  "item": [
+    {
+      "name": "/boilerplate/test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/boilerplate/test",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "boilerplate",
+            "test"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/boilerplate/greet/{message}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/boilerplate/greet/hello",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "boilerplate",
+            "greet",
+            "hello"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/animal/all",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/animal/all",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "animal",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/animal/filter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/animal/filter?page=17&size=50&sort=name,asc",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "animal",
+            "filter"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "17"
+            },
+            {
+              "key": "size",
+              "value": "50"
+            },
+            {
+              "key": "sort",
+              "value": "name,asc"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/animal/filter-cursor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/animal/filter-cursor?size=50&sort=name,asc&cursor=eyJmaWVsZCI6Im5hbWUiLCJkaXJlY3Rpb24iOiJhc2MiLCJ2YWx1ZSI6InRpZ2VyIiwiY3JlYXRlZEF0IjoiMjAyNi0wNS0yOFQxNDoyNToxMC42MTUxODZaIiwiaWQiOiIwNjI5MzZmZS04ZjM5LTRjMzctYjMyNS1kMWJjNmRjMTMyZmMifQ",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "animal",
+            "filter-cursor"
+          ],
+          "query": [
+            {
+              "key": "size",
+              "value": "50"
+            },
+            {
+              "key": "sort",
+              "value": "name,asc"
+            },
+            {
+              "key": "cursor",
+              "value": "eyJmaWVsZCI6Im5hbWUiLCJkaXJlY3Rpb24iOiJhc2MiLCJ2YWx1ZSI6InRpZ2VyIiwiY3JlYXRlZEF0IjoiMjAyNi0wNS0yOFQxNDoyNToxMC42MTUxODZaIiwiaWQiOiIwNjI5MzZmZS04ZjM5LTRjMzctYjMyNS1kMWJjNmRjMTMyZmMifQ"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/animal/save",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/animal/save",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "animal",
+            "save"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

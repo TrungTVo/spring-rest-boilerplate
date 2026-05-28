@@ -36,4 +36,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		Response response = Response.builder().metadata(metadata).build();
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+
+	@SuppressWarnings("rawtypes")
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<Response> handleIllegalArgumentException(IllegalArgumentException ex) {
+		ResponseMetadata metadata = ResponseMetadata.builder()
+				.statusCode(HttpStatus.BAD_REQUEST.value())
+				.status(ResponseStatus.ERROR.getStatus())
+				.message(ex.getMessage())
+				.build();
+		Response response = Response.builder().metadata(metadata).build();
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
 }

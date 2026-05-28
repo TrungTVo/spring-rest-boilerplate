@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.boilerplate.commons.models.Response;
@@ -63,6 +65,30 @@ public class AnimalController {
         Response<?> messageRes = Response.builder()
                 .data(this.animalService.getFilteredAnimals(pageable))
                 .metadata(ResponseMetadata.success("Successfully returned filtered animals", HttpStatus.OK.value()))
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(messageRes);
+    }
+
+    /**
+     * Filter animals with cursor pagination.
+     * Sample endpoint:
+     * {@code /animal/filter-cursor?size=3&sort=name,asc&cursor=... }
+     *
+     * @param size   page size
+     * @param sort   single supported sort field: createdAt, name or age
+     * @param cursor optional URL-safe Base64 encoded cursor
+     * @return
+     */
+    @GetMapping("filter-cursor")
+    public ResponseEntity<Response<?>> getFilteredAnimalsByCursor(
+            @RequestParam(defaultValue = "20") int size,
+            @ParameterObject Sort sort,
+            @RequestParam(required = false) String cursor) {
+        logger.info("Filter animals by cursor... size=" + size + ", sort=" + sort + ", cursor=" + cursor);
+
+        Response<?> messageRes = Response.builder()
+                .data(this.animalService.getFilteredAnimalsByCursor(size, sort, cursor))
+                .metadata(ResponseMetadata.success("Successfully returned cursor filtered animals", HttpStatus.OK.value()))
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(messageRes);
     }

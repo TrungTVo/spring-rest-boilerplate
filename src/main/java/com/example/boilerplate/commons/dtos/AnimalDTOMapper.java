@@ -11,7 +11,7 @@ public class AnimalDTOMapper implements Function<Animal, AnimalDTO> {
 
     @Override
     public AnimalDTO apply(Animal animal) {
-        return new AnimalDTO(animal.getId(), animal.getName(), animal.getAge());
+        return new AnimalDTO(animal.getId(), animal.getCreatedAt(), animal.getName(), animal.getAge());
     }
 
 }
