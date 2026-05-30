@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MySQL Offset vs Cursor Pagination Visualizer</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2316756f'/%3E%3Cpath d='M15 18h34M15 32h26M15 46h18' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">MySQL pagination visualizer</p>
+          <h3>Offset vs Cursor Pagination Visualizer</h3>
+          <p class="lede">
+            This demo uses only <code>id</code> and ascending order. Change the sample table size,
+            page size, and page number to see exactly which IDs MySQL walks for each strategy.
+          </p>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Pagination controls">
+        <label>
+          <span>Sample data size</span>
+          <input id="totalRows" type="range" min="10" max="500" step="10" value="100">
+          <output id="totalRowsOut" for="totalRows"></output>
+        </label>
+        <label>
+          <span>Page size</span>
+          <input id="pageSize" type="range" min="1" max="50" step="1" value="10">
+          <output id="pageSizeOut" for="pageSize"></output>
+        </label>
+        <label>
+          <span>Page to request</span>
+          <input id="pageNumber" type="range" min="1" max="10" step="1" value="5">
+          <output id="pageNumberOut" for="pageNumber"></output>
+        </label>
+        <div class="static-stat">
+          <span>Table order</span>
+          <strong>id ASC</strong>
+        </div>
+      </section>
+
+      <section class="legend" aria-label="Visualization legend">
+        <span><i class="legend-box skipped"></i>Scanned then discarded</span>
+        <span><i class="legend-box returned-offset"></i>Returned by offset</span>
+        <span><i class="legend-box cursor-edge"></i>Cursor boundary</span>
+        <span><i class="legend-box returned-cursor"></i>Returned by cursor</span>
+      </section>
+
+      <section class="comparison" aria-label="Pagination comparison">
+        <article class="panel offset-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Offset pagination</p>
+              <h2>Start at id 1, count forward</h2>
+            </div>
+            <span class="metric"><strong id="offsetScanned">0</strong> rows scanned</span>
+          </div>
+          <p id="offsetExplanation"></p>
+          <div class="row-window">
+            <div id="offsetRows" class="row-strip" aria-label="Offset scanned rows"></div>
+          </div>
+          <dl class="facts">
+            <div>
+              <dt>Offset</dt>
+              <dd id="offsetValue">0</dd>
+            </div>
+            <div>
+              <dt>Returned IDs</dt>
+              <dd id="offsetReturned">0</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="panel cursor-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Keyset / cursor pagination</p>
+              <h2>Start after the last seen id</h2>
+            </div>
+            <span class="metric"><strong id="cursorScanned">0</strong> rows scanned</span>
+          </div>
+          <p id="cursorExplanation"></p>
+          <div class="row-window">
+            <div id="cursorRows" class="row-strip" aria-label="Cursor scanned rows"></div>
+          </div>
+          <dl class="facts">
+            <div>
+              <dt>Cursor param</dt>
+              <dd id="cursorValue">none</dd>
+            </div>
+            <div>
+              <dt>Returned IDs</dt>
+              <dd id="cursorReturned">0</dd>
+            </div>
+          </dl>
+        </article>
+
+        <div class="takeaway" aria-label="Current comparison">
+          <div>
+            <p class="eyebrow">Takeaway</p>
+            <strong id="scanDifference">0</strong>
+            <span>extra rows offset scans before it can return this page</span>
+          </div>
+          <div class="takeaway-notes">
+            <p id="cursorJumpNote"></p>
+            <p>
+              Cursor pagination is optimized because the API sends the last seen ID as
+              <code>after_id</code>. MySQL can jump directly to that indexed boundary and scan only
+              the next page.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="queries" aria-label="SQL and API examples">
+        <article class="query-card">
+          <h2>Offset SQL and API</h2>
+          <pre><code id="offsetSql"></code></pre>
+          <pre><code id="offsetApi"></code></pre>
+          <p>
+            Offset is easy to call because the client can ask for any page number. The cost grows
+            because MySQL still walks the skipped IDs.
+          </p>
+        </article>
+        <article class="query-card">
+          <h2>Cursor SQL and API</h2>
+          <pre><code id="cursorSql"></code></pre>
+          <pre><code id="cursorApi"></code></pre>
+          <p>
+            Cursor pagination sends the last ID from the previous page. With <code>PRIMARY KEY(id)</code>,
+            MySQL can seek to that ID and continue forward.
+          </p>
+        </article>
+      </section>
+
+      <section class="notes" aria-label="Short explanation">
+        <h2>The mental model</h2>
+        <div class="note-grid">
+          <div>
+            <h3>Offset</h3>
+            <p>
+              Page 5 with page size 10 means: skip 40 rows, then return 10. Those skipped rows are
+              not free; the engine must walk past IDs 1 through 40 first.
+            </p>
+          </div>
+          <div>
+            <h3>Cursor</h3>
+            <p>
+              Page 5 with page size 10 means: you already ended page 4 at ID 40, so ask for IDs
+              greater than 40 and return the next 10.
+            </p>
+          </div>
+          <div>
+            <h3>Index</h3>
+            <p>
+              For this simplified ascending example, the useful index is just the primary key:
+              <code>PRIMARY KEY(id)</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
