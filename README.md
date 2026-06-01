@@ -52,7 +52,46 @@ Actuator
 localhost:8080/actuator
 ```
 
-## Other features
+## Zoo relationship lab
 
-Check out these branches for more features:
-- [cursor-pagination](https://github.com/trungtvo/spring-rest-boilerplate/tree/cursor-pagination): Cursor pagination vs offset pagination
+This project includes a small JPA relationship playground built around the
+existing `/animal` endpoint.
+
+- **One-to-one:** `Animal` to `MedicalRecord`
+- **One-to-many:** `Habitat` to `Animal`
+- **Many-to-many:** `Animal` to `Caretaker`
+
+Animal endpoints:
+
+```
+POST   /animal/create
+GET    /animal/{animalId}
+PUT    /animal/{animalId}
+DELETE /animal/{animalId}
+PUT    /animal/{animalId}/habitat/{habitatId}
+PUT    /animal/{animalId}/medical-record/{recordId}
+PUT    /animal/{animalId}/caretakers/{caretakerId}
+DELETE /animal/{animalId}/caretakers/{caretakerId}
+```
+
+Supporting endpoints:
+
+```
+POST   /habitat/create
+GET    /habitat/all
+GET    /habitat/{habitatId}
+PUT    /habitat/{habitatId}
+DELETE /habitat/{habitatId}
+
+POST   /medical-record/create
+GET    /medical-record/all
+GET    /medical-record/{recordId}
+PUT    /medical-record/{recordId}
+DELETE /medical-record/{recordId}
+
+POST   /caretaker/create
+GET    /caretaker/all
+GET    /caretaker/{caretakerId}
+PUT    /caretaker/{caretakerId}
+DELETE /caretaker/{caretakerId}
+```

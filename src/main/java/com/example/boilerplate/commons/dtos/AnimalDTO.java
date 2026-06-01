@@ -1,5 +1,6 @@
 package com.example.boilerplate.commons.dtos;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -8,6 +9,9 @@ import java.util.UUID;
 public record AnimalDTO(
         UUID id,
         String name,
-        int age) {
+        int age,
+        HabitatDTO habitat,
+        MedicalRecordDTO medicalRecord,
+        List<CaretakerDTO> caretakers) {
 
 }

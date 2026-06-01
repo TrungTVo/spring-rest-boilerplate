@@ -1,0 +1,641 @@
+{
+  "info": {
+    "_postman_id": "50538d35-a3b8-4c34-8145-96ecaefb4746",
+    "name": "spring-rest-boilerplate",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6355772"
+  },
+  "item": [
+    {
+      "name": "boilerplate",
+      "item": [
+        {
+          "name": "/boilerplate/test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/boilerplate/test",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "boilerplate",
+                "test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/boilerplate/greet/{message}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/boilerplate/greet/hello",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "boilerplate",
+                "greet",
+                "hello"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "animal",
+      "item": [
+        {
+          "name": "/animal/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/filter",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/filter?page=17&size=50&sort=name,asc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "17"
+                },
+                {
+                  "key": "size",
+                  "value": "50"
+                },
+                {
+                  "key": "sort",
+                  "value": "name,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/save",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/save",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "save"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"rabbit\",\n    \"age\": 24,\n    \"password\": \"pass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/animal/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/{animalId}/medical-record/{recordId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/4454024f-bbf5-4c61-97e5-975121fbcb0a/medical-record/48321c74-091a-490a-9399-459b66eab79f",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "4454024f-bbf5-4c61-97e5-975121fbcb0a",
+                "medical-record",
+                "48321c74-091a-490a-9399-459b66eab79f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/{animalId}/habitat/{habitatId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/4454024f-bbf5-4c61-97e5-975121fbcb0a/habitat/f8f4eeba-3083-45cb-8997-8e6a8e30f880",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "4454024f-bbf5-4c61-97e5-975121fbcb0a",
+                "habitat",
+                "f8f4eeba-3083-45cb-8997-8e6a8e30f880"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/{animalId}/caretakers/{caretakerId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/4454024f-bbf5-4c61-97e5-975121fbcb0a/caretakers/a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "4454024f-bbf5-4c61-97e5-975121fbcb0a",
+                "caretakers",
+                "a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/{animalId}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/4454024f-bbf5-4c61-97e5-975121fbcb0a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "4454024f-bbf5-4c61-97e5-975121fbcb0a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/animal/{animalId}/caretakers/{caretakerId}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/animal/4454024f-bbf5-4c61-97e5-975121fbcb0a/caretakers/a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "animal",
+                "4454024f-bbf5-4c61-97e5-975121fbcb0a",
+                "caretakers",
+                "a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "habitat",
+      "item": [
+        {
+          "name": "/habitat/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/habitat/all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "habitat",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/habitat/{habitatId}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/habitat/f8f4eeba-3083-45cb-8997-8e6a8e30f880",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "habitat",
+                "f8f4eeba-3083-45cb-8997-8e6a8e30f880"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/habitat/create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"jungle\",\n    \"climate\": \"tropical\",\n    \"description\": \"rains a lot...\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/habitat/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "habitat",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/habitat/{habitatId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"dessert\",\n    \"climate\": \"hot\",\n    \"description\": \"no rain...\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/habitat/f8f4eeba-3083-45cb-8997-8e6a8e30f880",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "habitat",
+                "f8f4eeba-3083-45cb-8997-8e6a8e30f880"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/habitat/{habitatId}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/habitat/f8f4eeba-3083-45cb-8997-8e6a8e30f880",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "habitat",
+                "f8f4eeba-3083-45cb-8997-8e6a8e30f880"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "medical_record",
+      "item": [
+        {
+          "name": "/medical-record/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/medical-record/all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "medical-record",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/medical-record/{recordId}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/medical-record/48321c74-091a-490a-9399-459b66eab79f",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "medical-record",
+                "48321c74-091a-490a-9399-459b66eab79f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/medical-record/create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"diagnosis\": \"perfect condition\",\n    \"treatment\": \"none\",\n    \"notes\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/medical-record/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "medical-record",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/medical-record/{recordId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"diagnosis\": \"bad condition\",\n    \"treatment\": \"medicine\",\n    \"notes\": \"watch careful\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/medical-record/2bf90557-77d4-4dca-a1b5-8a658601a131",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "medical-record",
+                "2bf90557-77d4-4dca-a1b5-8a658601a131"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/medical-record/{recordId}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/medical-record/2bf90557-77d4-4dca-a1b5-8a658601a131",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "medical-record",
+                "2bf90557-77d4-4dca-a1b5-8a658601a131"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "caretaker",
+      "item": [
+        {
+          "name": "/caretaker/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/caretaker/all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "caretaker",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/caretaker/{caretakerId}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/caretaker/a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "caretaker",
+                "a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/caretaker/create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Trung Vo\",\n    \"shift\": \"9-5\",\n    \"specialty\": \"feeding\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/caretaker/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "caretaker",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/caretaker/{caretakerId}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Ron Vo\",\n    \"shift\": \"9-5\",\n    \"specialty\": \"shower\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/caretaker/a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "caretaker",
+                "a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/caretaker/{caretakerId}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/caretaker/a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "caretaker",
+                "a2dac72b-f077-4f80-91cd-dcb4ef2cd1d3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
