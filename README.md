@@ -52,7 +52,7 @@ Actuator
 localhost:8080/actuator
 ```
 
-## Other features
+## Other use cases
 
 Check out these branches for more features:
 - [cursor-pagination](https://github.com/trungtvo/spring-rest-boilerplate/tree/cursor-pagination): Cursor pagination vs offset pagination
