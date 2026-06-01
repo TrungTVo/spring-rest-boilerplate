@@ -56,3 +56,4 @@ localhost:8080/actuator
 
 Check out these branches for more features:
 - [cursor-pagination](https://github.com/trungtvo/spring-rest-boilerplate/tree/cursor-pagination): Cursor pagination vs offset pagination
+- [entity-relationships](https://github.com/TrungTVo/spring-rest-boilerplate/tree/entity-relationship): Example of entity relationships (**one-to-one, one-to-many, many-to-many**) and how to handle them in REST APIs with Hibernate and Spring Data JPA
