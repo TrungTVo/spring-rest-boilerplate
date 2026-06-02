@@ -55,5 +55,6 @@ localhost:8080/actuator
 ## Other use cases
 
 Check out these branches for more features:
-- [cursor-pagination](https://github.com/trungtvo/spring-rest-boilerplate/tree/cursor-pagination): Cursor pagination vs offset pagination
-- [entity-relationships](https://github.com/TrungTVo/spring-rest-boilerplate/tree/entity-relationship): Example of entity relationships (**one-to-one, one-to-many, many-to-many**) and how to handle them in REST APIs with Hibernate and Spring Data JPA
+- [**cursor-pagination**](https://github.com/trungtvo/spring-rest-boilerplate/tree/cursor-pagination): Cursor pagination vs offset pagination
+- [**entity-relationships**](https://github.com/TrungTVo/spring-rest-boilerplate/tree/entity-relationship): Example of entity relationships (**one-to-one, one-to-many, many-to-many**) and how to handle them in REST APIs with Hibernate and Spring Data JPA. Usage of `@Transactional` annotation to manage transactions and ensure data integrity when performing CRUD operations on related entities.
+- [**transaction-retries**](https://github.com/TrungTVo/spring-rest-boilerplate/tree/transaction-retries): Understand how to implement retry logic for transactional operations in Spring Data JPA.
