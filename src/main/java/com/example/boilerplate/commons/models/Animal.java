@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,7 @@ public class Animal {
     @EqualsAndHashCode.Include
     private UUID id;
 
+    @Column(nullable = false)
     private String name;
 
     private int age;

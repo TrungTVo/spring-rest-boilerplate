@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,11 +80,27 @@ public class AnimalService implements AnimalInterface {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Retryable(
+        retryFor    = RuntimeException.class,
+        maxAttempts = 3,
+        backoff     = @Backoff(delay = 1000, multiplier = 2)
+    )
     public AnimalDTO createAnimal(AnimalRequest request) {
+        return executeCreateAnimal(request);
+    }
+
+    @Recover
+    public AnimalDTO cannotCreateAnimal(RuntimeException ex, AnimalRequest request) {
+        throw new RuntimeException("Failed to create animal after 3 retries: " + ex.getMessage());
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO executeCreateAnimal(AnimalRequest request) {
         Animal animal = new Animal(request.name(), request.age(), request.password());
         return this.animalDTOMapper.apply(this.animalRepository.save(animal));
     }
+
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
