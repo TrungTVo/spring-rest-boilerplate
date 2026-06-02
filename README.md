@@ -58,8 +58,18 @@ This project includes a small JPA relationship playground built around the
 existing `/animal` endpoint.
 
 - **One-to-one:** `Animal` to `MedicalRecord`
+    - One animal has zero or one medical record.
+    - `MedicalRecord` owns the relationship with `animal_id`.
+    - Link through `PUT /animal/{animalId}/medical-record/{recordId}`
 - **One-to-many:** `Habitat` to `Animal`
+    - One habitat has many animals.
+    - Each animal belongs to zero or one habitat.
+    - `Animal` owns the relationship with `habitat_id`.
+    - Link through `PUT /animal/{animalId}/habitat/{habitatId}`
 - **Many-to-many:** `Animal` to `Caretaker`
+    - Use a join table such as `animal_caretakers`.
+    - Link through `PUT /animal/{animalId}/caretakers/{caretakerId}`.
+    - Unlink through `DELETE /animal/{animalId}/caretakers/{caretakerId}`
 
 Animal endpoints:
 
