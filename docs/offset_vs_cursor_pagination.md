@@ -16,6 +16,7 @@ There will be `20` pages in total, and each page will have `50` records. Page is
 
 **offset pagination:**
 ------------------------
+![offset pagination](img/offset_pagination.png)
 ```sql
 EXPLAIN ANALYZE
 SELECT id, created_at, name, age, password
@@ -31,6 +32,7 @@ Running explain analyze on the above query will show that the database has to sc
 
 **cursor pagination:**
 ------------------------
+![cursor pagination](img/cursor_pagination.png)
 ```sql
 EXPLAIN ANALYZE
 SELECT id, created_at, name, age, password
