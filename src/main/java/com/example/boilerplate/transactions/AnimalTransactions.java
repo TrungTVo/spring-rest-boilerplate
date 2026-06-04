@@ -1,0 +1,199 @@
+package com.example.boilerplate.transactions;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import com.example.boilerplate.commons.dtos.AnimalDTO;
+import com.example.boilerplate.commons.dtos.AnimalDTOMapper;
+import com.example.boilerplate.commons.dtos.AnimalRequest;
+import com.example.boilerplate.commons.models.Animal;
+import com.example.boilerplate.commons.models.Caretaker;
+import com.example.boilerplate.commons.models.Habitat;
+import com.example.boilerplate.commons.models.MedicalRecord;
+import com.example.boilerplate.exceptions.NoRecordFoundException;
+import com.example.boilerplate.repositories.AnimalRepository;
+import com.example.boilerplate.repositories.CaretakerRepository;
+import com.example.boilerplate.repositories.HabitatRepository;
+import com.example.boilerplate.repositories.MedicalRecordRepository;
+
+@Service
+public class AnimalTransactions {
+    private Logger logger = LoggerFactory.getLogger(AnimalTransactions.class);
+
+    @Value("${instance:A}")
+    private String instance;
+
+    @Autowired
+    private AnimalRepository animalRepository;
+
+    @Autowired
+    private HabitatRepository habitatRepository;
+
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+
+    @Autowired
+    private CaretakerRepository caretakerRepository;
+
+    @Autowired
+    private AnimalDTOMapper animalDTOMapper;
+
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public List<AnimalDTO> getAllAnimals() {
+        return this.animalRepository.findAll()
+                .stream()
+                .map(this.animalDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public Page<AnimalDTO> getFilteredAnimals(Pageable pageable) {
+        Page<Animal> pAnimal = this.animalRepository.findAll(pageable);
+        List<Animal> lAnimal = pAnimal.getContent();
+        List<AnimalDTO> lAnimalDTO = lAnimal.stream()
+                .map(this.animalDTOMapper)
+                .collect(Collectors.toList());
+        return new PageImpl<AnimalDTO>(lAnimalDTO, pageable, pAnimal.getTotalElements());
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void saveAnimals() {
+        List<Animal> animals = List.of(
+                new Animal("dog", 1, "pass1"),
+                new Animal("cat", 2, "pass2"),
+                new Animal("tiger", 3, "pass3"),
+                new Animal("lion", 4, "pass4"),
+                new Animal("bird", 5, "pass5"),
+                new Animal("fish", 6, "pass6"));
+        this.animalRepository.saveAll(animals);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO createAnimal(AnimalRequest request) {
+        Animal animal = new Animal(request.name(), request.age(), request.password(), request.balance());
+        Animal createdAnimal = this.animalRepository.save(animal);
+        return this.animalDTOMapper.apply(createdAnimal);
+    }
+
+
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public AnimalDTO getAnimal(UUID animalId) {
+        return this.animalDTOMapper.apply(this.findAnimal(animalId));
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO updateAnimal(UUID animalId, AnimalRequest request) {
+        Animal animal = this.findAnimal(animalId);
+        animal.setName(request.name());
+        animal.setAge(request.age());
+        animal.setBalance(animal.getBalance().subtract(BigDecimal.valueOf(1.00))); // Example of updating balance
+        animal.setPassword(request.password());
+        Animal updatedAnimal = this.animalRepository.save(animal);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                logger.info("✅ Instance {} successfully updated animal with ID: {}", instance, animalId);
+            }
+        });
+        return this.animalDTOMapper.apply(updatedAnimal);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteAnimal(UUID animalId) {
+        Animal animal = this.findAnimal(animalId);
+        if (animal.getMedicalRecord() != null) {
+            animal.getMedicalRecord().setAnimal(null);
+            animal.setMedicalRecord(null);
+        }
+        if (animal.getHabitat() != null) {
+            animal.getHabitat().getAnimals().remove(animal);
+            animal.setHabitat(null);
+        }
+        animal.getCaretakers()
+                .forEach(caretaker -> caretaker.getAnimals().remove(animal));
+        animal.getCaretakers().clear();
+        this.animalRepository.delete(animal);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO assignHabitat(UUID animalId, UUID habitatId) {
+        Animal animal = this.findAnimal(animalId);
+        Habitat habitat = this.habitatRepository.findById(habitatId)
+                .orElseThrow(() -> new NoRecordFoundException("No habitat found with id " + habitatId));
+
+        if (animal.getHabitat() != null) {
+            animal.getHabitat().getAnimals().remove(animal);
+        }
+        animal.setHabitat(habitat);
+        habitat.getAnimals().add(animal);
+        return this.animalDTOMapper.apply(this.animalRepository.save(animal));
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO assignMedicalRecord(UUID animalId, UUID recordId) {
+        Animal animal = this.findAnimal(animalId);
+        MedicalRecord medicalRecord = this.medicalRecordRepository.findById(recordId)
+                .orElseThrow(() -> new NoRecordFoundException("No medical record found with id " + recordId));
+
+        if (animal.getMedicalRecord() != null) {
+            animal.getMedicalRecord().setAnimal(null);
+        }
+        if (medicalRecord.getAnimal() != null) {
+            medicalRecord.getAnimal().setMedicalRecord(null);
+        }
+        animal.setMedicalRecord(medicalRecord);
+        medicalRecord.setAnimal(animal);
+        this.medicalRecordRepository.save(medicalRecord);
+        return this.animalDTOMapper.apply(this.animalRepository.save(animal));
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO addCaretaker(UUID animalId, UUID caretakerId) {
+        Animal animal = this.findAnimal(animalId);
+        Caretaker caretaker = this.caretakerRepository.findById(caretakerId)
+                .orElseThrow(() -> new NoRecordFoundException("No caretaker found with id " + caretakerId));
+
+        animal.addCaretaker(caretaker);
+        return this.animalDTOMapper.apply(this.animalRepository.save(animal));
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public AnimalDTO removeCaretaker(UUID animalId, UUID caretakerId) {
+        Animal animal = this.findAnimal(animalId);
+        Caretaker caretaker = this.caretakerRepository.findById(caretakerId)
+                .orElseThrow(() -> new NoRecordFoundException("No caretaker found with id " + caretakerId));
+
+        animal.removeCaretaker(caretaker);
+        return this.animalDTOMapper.apply(this.animalRepository.save(animal));
+    }
+
+
+    public Animal findAnimal(UUID animalId) {
+        return this.animalRepository.findById(animalId)
+                .orElseThrow(() -> new NoRecordFoundException("No animal found with id " + animalId));
+    }
+}

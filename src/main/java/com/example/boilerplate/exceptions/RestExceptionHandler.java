@@ -1,5 +1,6 @@
 package com.example.boilerplate.exceptions;
 
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,5 +36,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				.build();
 		Response response = Response.builder().metadata(metadata).build();
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@ExceptionHandler(OptimisticLockingFailureException.class)
+	public ResponseEntity<Response> handleOptimisticLockingFailureException(OptimisticLockingFailureException ex) {
+		ResponseMetadata metadata = ResponseMetadata.builder()
+				.statusCode(HttpStatus.CONFLICT.value())
+				.status(ResponseStatus.ERROR.getStatus())
+				.message(ex.getMessage())
+				.build();
+		Response response = Response.builder().metadata(metadata).build();
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
 }

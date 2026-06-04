@@ -1,0 +1,28 @@
+services:
+  mysql:
+    image: mysql:latest
+    hostname: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123 # Change this!
+      MYSQL_DATABASE: myappdb # Optional: creates a database on startup
+      MYSQL_USER: appuser # Optional: creates a non-root user
+      MYSQL_PASSWORD: appuserpassword123 # Change this!
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql # Persistent data
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  default: {}

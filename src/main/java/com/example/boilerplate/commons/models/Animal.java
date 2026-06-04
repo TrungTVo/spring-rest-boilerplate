@@ -1,5 +1,6 @@
 package com.example.boilerplate.commons.models;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Version;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,10 +57,23 @@ public class Animal {
     @ToString.Exclude
     private Set<Caretaker> caretakers = new HashSet<>();
 
+    private BigDecimal balance = BigDecimal.valueOf(0.00);
+
+    /** Version field for optimistic lock */
+    @Version                    // ← this is all Hibernate needs
+    private Long version;       // auto-managed: never set this yourself
+
     public Animal(String name, int age, String password) {
         this.name = name;
         this.age = age;
         this.password = password;
+    }
+
+    public Animal(String name, int age, String password, BigDecimal balance) {
+        this.name = name;
+        this.age = age;
+        this.password = password;
+        this.balance = balance;
     }
 
     public void addCaretaker(Caretaker caretaker) {

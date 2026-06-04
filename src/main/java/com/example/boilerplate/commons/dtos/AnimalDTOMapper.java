@@ -20,13 +20,15 @@ public class AnimalDTOMapper implements Function<Animal, AnimalDTO> {
                 animal.getId(),
                 animal.getName(),
                 animal.getAge(),
+                animal.getBalance(),
                 this.toHabitatDTO(animal.getHabitat()),
                 this.toMedicalRecordDTO(animal.getMedicalRecord()),
                 animal.getCaretakers()
                         .stream()
                         .sorted(Comparator.comparing(Caretaker::getName, Comparator.nullsLast(String::compareTo)))
                         .map(this::toCaretakerDTO)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()),
+                animal.getVersion());
     }
 
     public HabitatDTO toHabitatDTO(Habitat habitat) {

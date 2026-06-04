@@ -1,5 +1,6 @@
 package com.example.boilerplate.commons.dtos;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,8 +11,11 @@ public record AnimalDTO(
         UUID id,
         String name,
         int age,
+        BigDecimal balance,
         HabitatDTO habitat,
         MedicalRecordDTO medicalRecord,
-        List<CaretakerDTO> caretakers) {
+        List<CaretakerDTO> caretakers,
+        Long version
+) {
 
 }
