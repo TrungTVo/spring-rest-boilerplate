@@ -59,23 +59,30 @@ The retry behavior lives on `AnimalService.createAnimal(...)`. If a runtime
 exception is thrown while saving, Spring retries the method up to 3 total
 attempts before calling the recovery method:
 
+`AnimalService.java`:
 ```java
+@Autowired
+private AnimalTransactions animalTransactions;
+
 @Retryable(
     retryFor = RuntimeException.class,
     maxAttempts = 3,
     backoff = @Backoff(delay = 1000, multiplier = 2)
 )
 public AnimalDTO createAnimal(AnimalRequest request) {
-    return executeCreateAnimal(request);
+    return animalTransactions.createAnimal(request);
 }
 
 @Recover
 public AnimalDTO cannotCreateAnimal(RuntimeException ex, AnimalRequest request) {
     throw new RuntimeException("Failed to create animal after 3 retries: " + ex.getMessage());
 }
+```
 
+`AnimalTransactions.java`:
+```java
 @Transactional(rollbackFor = Exception.class)
-public AnimalDTO executeCreateAnimal(AnimalRequest request) {
+public AnimalDTO createAnimal(AnimalRequest request) {
     Animal animal = new Animal(request.name(), request.age(), request.password());
     return this.animalDTOMapper.apply(this.animalRepository.save(animal));
 }
@@ -93,7 +100,7 @@ curl -X POST http://localhost:8080/animal/create \
 
 The request reaches `AnimalController.createAnimal(...)`, which calls
 `AnimalService.createAnimal(...)`. Because the service method is `@Retryable`,
-Spring Retry wraps the call. `executeCreateAnimal(...)` builds an `Animal` with a
+Spring Retry wraps the call. It then calls `AnimalTransactions.createAnimal(...)` and builds an `Animal` with a
 `null` name and tries to save it. The new non-null column constraint causes the
 save to throw a runtime exception, so Spring Retry calls the create flow again.
 
