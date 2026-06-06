@@ -3,11 +3,12 @@ package com.example.boilerplate.services;
 import java.util.List;
 import java.util.UUID;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Backoff;
@@ -26,6 +27,9 @@ public class AnimalService implements AnimalInterface {
     
     @Value("${instance:A}")
     private String instance;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Autowired
     private AnimalTransactions animalTransactions;
@@ -57,7 +61,9 @@ public class AnimalService implements AnimalInterface {
 
     @Recover
     public AnimalDTO cannotCreateAnimal(RuntimeException ex, AnimalRequest request) {
-        throw new RuntimeException("Failed to create animal after 3 retries: " + ex.getMessage());
+        String errorMessage = "Failed to create animal after 3 retries: " + ex.getMessage();
+        this.logger.error(errorMessage);
+        throw new RuntimeException(errorMessage);
     }
 
     @Override
@@ -67,14 +73,22 @@ public class AnimalService implements AnimalInterface {
 
     @Override
     public AnimalDTO updateAnimal(UUID animalId, AnimalRequest request) {
+        logger.info("Instance {} is updating animal with ID: {}", instance, animalId);
+        boolean locked = false;
+        RLock lock = this.redissonClient.getLock("lock:animal:balance:" + animalId.toString());
         try {
-            logger.info("Instance {} is updating animal with ID: {}", instance, animalId);
+            locked = lock.tryLock();
+            if (!locked) {
+                String errorMessage = "❌ Conflict! Server busy! Instance " + instance + " failed to acquire lock for animal with ID: " + animalId;
+                logger.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+            }
             return this.animalTransactions.updateAnimal(animalId, request);
         }
-        catch (OptimisticLockingFailureException ex) {
-            String errorMessage = "❌ Conflict! Server busy! Instance " + instance + " failed to update animal with ID: " + animalId + ". Error: " + ex.getMessage();
-            logger.error(errorMessage);
-            throw new OptimisticLockingFailureException(errorMessage);
+        finally {
+            if (locked && lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
     }
 

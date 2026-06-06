@@ -78,6 +78,7 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-devtools</artifactId>
 		    <scope>runtime</scope>
+		    <optional>true</optional>
 		</dependency>
 
 		<!-- The core retry logic and annotations -->
@@ -97,6 +98,12 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson-spring-boot-starter</artifactId>
+			<version>4.4.0</version>
 		</dependency>
 
 		<dependency>

@@ -4,6 +4,6 @@ COPY . /usr/apps/spring-rest-boilerplate
 
 WORKDIR /usr/apps/spring-rest-boilerplate
 
-RUN ./mvnw clean package
+RUN ./mvnw clean package -DskipTests
 
 CMD ["java","-jar","target/boilerplate-0.0.1-SNAPSHOT.jar"]

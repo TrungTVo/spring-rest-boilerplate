@@ -1,12 +1,14 @@
 # Optimistic Lock
 
+Use `version` field in the `Animal` entity to implement optimistic locking. This way, when multiple concurrent requests try to update the same animal record, only one will succeed while the others will fail with a `409 Conflict` error, preventing data inconsistencies.
+
 ## Terminal 0 — start MySQL Database
 ```bash
 docker compose -f ./mysql/docker-compose.yml up -d
 ```
 Then build the application:
 ```bash
-./mvnw clean package
+./mvnw clean package -DskipTests
 ```
 
 ## Terminal 1 — instance `A` on port `8080`

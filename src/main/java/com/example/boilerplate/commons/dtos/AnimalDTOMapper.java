@@ -27,8 +27,8 @@ public class AnimalDTOMapper implements Function<Animal, AnimalDTO> {
                         .stream()
                         .sorted(Comparator.comparing(Caretaker::getName, Comparator.nullsLast(String::compareTo)))
                         .map(this::toCaretakerDTO)
-                        .collect(Collectors.toList()),
-                animal.getVersion());
+                        .collect(Collectors.toList())
+                );
     }
 
     public HabitatDTO toHabitatDTO(Habitat habitat) {

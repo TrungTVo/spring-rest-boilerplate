@@ -20,8 +20,31 @@ services:
       timeout: 5s
       retries: 3
 
+  redis-server:
+    image: redis/redis-stack-server:7.4.0-v8
+    container_name: redis-server
+    hostname: redis-server
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - default
+
+  redisinsight:
+    image: redis/redisinsight:3.2
+    container_name: redisinsight
+    hostname: redisinsight
+    ports:
+      - 5540:5540
+    networks:
+      - default
+    volumes:
+      - redisinsight-data:/data    
+
 volumes:
   mysql-data:
+    driver: local
+  redisinsight-data:
     driver: local
 
 networks:

@@ -14,8 +14,7 @@ public record AnimalDTO(
         BigDecimal balance,
         HabitatDTO habitat,
         MedicalRecordDTO medicalRecord,
-        List<CaretakerDTO> caretakers,
-        Long version
+        List<CaretakerDTO> caretakers
 ) {
 
 }
